@@ -15,7 +15,7 @@
     <div>
       <label for="status">status</label>
         <select id="status" v-model="data.status">
-          <option  v-for="option, index in options" :key="index" value="option">{{ option }}</option>
+          <option  v-for="option, index in options" :key="index" :value="option">{{ option }}</option>
         </select>
     </div>
 
@@ -48,6 +48,7 @@ export default defineComponent({
     console.log(data)
 
     const onSubmit = () => {
+      console.log(data)
       todoStore.addTodo(data)
       router.push('/')
     }

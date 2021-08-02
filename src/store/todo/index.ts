@@ -68,7 +68,7 @@ const updateTodo = (todo: Todo) => {
 }
 
 const deleteTodo = (id: number) => {
-  state.todos = state.todos.filter((todo) => todo.id === id)
+  state.todos = state.todos.filter((todo) => todo.id !== id)
 }
 
 const todoStore: TodoStore = {
