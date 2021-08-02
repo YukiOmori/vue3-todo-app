@@ -1,9 +1,11 @@
 <template>
-  <div id="todo-list">
-    <div v-for="todo in todoStore.state.todos" :key="todo.id">
-      <p>{{ todo.title }}</p>
-    </div>
-  </div>
+  <h1>TODO一覧</h1>
+  <ul id="todo-list">
+    <li v-for="todo in todoStore.state.todos" :key="todo.id">
+      {{ todo.title }}
+    </li>
+  </ul>
+  <router-link to="/new">新規作成</router-link>
 </template>
 
 <script lang="ts">
