@@ -25,7 +25,7 @@ export default defineComponent({
     }
     const onClickTitle = (id: number) => {
       console.log(todoStore.getTodo(id))
-      // router.push('/')
+      router.push(`/edit/${id}`)
     }
 
     const onClickDelete = (id: number) => {
