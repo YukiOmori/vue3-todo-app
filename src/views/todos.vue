@@ -1,42 +1,37 @@
 <template>
   <h1>TODO一覧</h1>
 
-  <todo-item v-for="todo in todoStore.state.todos" :key="todo.id" @on-click-title="onClickTitle" @on-click-delete="onClickDelete" :todo="todo" />
-
+  <div v-if="error">
+    {{ error.message }}
+  </div>
+  <Suspense v-else>
+    <template #default>
+      <AsyncTodos />
+    </template>
+    <template #fallback>
+      <div>...</div>
+    </template>
+  </Suspense>
   <router-link to="/new">新規作成</router-link>
 </template>
 
 <script lang="ts">
-import { defineComponent, inject } from 'vue'
-import { todoKey } from '@/store/todo'
-import TodoItem from '@/components/TodoItem.vue'
-import { useRouter } from 'vue-router'
+import { defineComponent, onErrorCaptured, ref } from 'vue'
+import AsyncTodos from '@/components/AsyncTodos.vue'
 
 export default defineComponent({
   components: {
-    TodoItem
+    AsyncTodos
   },
-  async setup () {
-    const todoStore = inject(todoKey)
-    const router = useRouter()
-
-    if (!todoStore) {
-      throw new Error('todoStore is not provided')
-    }
-    const onClickTitle = (id: number) => {
-      router.push(`/edit/${id}`)
-    }
-
-    const onClickDelete = (id: number) => {
-      todoStore.deleteTodo(id)
-    }
-
-    await todoStore.fetchTodos()
+  setup () {
+    const error = ref<unknown>(null)
+    onErrorCaptured((e) => {
+      error.value = e
+      return true
+    })
 
     return {
-      todoStore,
-      onClickTitle,
-      onClickDelete
+      error
     }
   }
 })
