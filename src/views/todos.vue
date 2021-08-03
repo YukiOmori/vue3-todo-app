@@ -16,7 +16,7 @@ export default defineComponent({
   components: {
     TodoItem
   },
-  setup () {
+  async setup () {
     const todoStore = inject(todoKey)
     const router = useRouter()
 
@@ -24,14 +24,15 @@ export default defineComponent({
       throw new Error('todoStore is not provided')
     }
     const onClickTitle = (id: number) => {
-      console.log(todoStore.getTodo(id))
       router.push(`/edit/${id}`)
     }
 
     const onClickDelete = (id: number) => {
-      console.log(`${id} dlete clicked`)
       todoStore.deleteTodo(id)
     }
+
+    await todoStore.fetchTodos()
+
     return {
       todoStore,
       onClickTitle,
